@@ -1,0 +1,173 @@
+{##}
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#  {{ i }}#}
+{#{% endfor %}#}
+{##}
+{#<div class="form-container">#}
+{#  <h2>Assigning Subjects</h2>#}
+{#  <form method="POST" action="/myapp/assignsubjects_post/">#}
+{#    <div class="row mb-3">#}
+{#      <label for="subject" class="col-sm-4 col-form-label">Subject Name</label>#}
+{#      <div class="col-sm-8">#}
+{#        <select name="subject" class="form-control" id="subject" required>#}
+{#          <option value="">Select Subject</option>#}
+{#          {% for sub in subjects %}#}
+{#          <option value="{{ sub.id }}">{{ sub.subname }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <div class="row mb-3">#}
+{#      <label for="staff" class="col-sm-4 col-form-label">Staff Name</label>#}
+{#      <div class="col-sm-8">#}
+{#        <select name="staff" class="form-control" id="staff" required>#}
+{#          <option value="">Select Staff</option>#}
+{#          {% for st in staffs %}#}
+{#          <option value="{{ st.id }}">{{ st.name }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <div class="row mb-3">#}
+{#      <div class="offset-sm-4 col-sm-8 d-grid">#}
+{#        <button type="submit" name="submit" class="btn btn-primary">Add</button>#}
+{#      </div>#}
+{#    </div>#}
+{#  </form>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Subjects</title>
+
+    <style>
+        body {
+            background: #f0f7ff;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .form-container {
+            max-width: 550px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        select, input, button {
+            height: 45px;
+            border-radius: 10px !important;
+        }
+
+        select:focus, input:focus {
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.2) !important;
+        }
+
+        .btn-primary {
+            height: 45px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(13,110,253,0.3);
+        }
+
+        /* Smooth animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Message design */
+        .custom-message {
+            background: #dff4ff;
+            padding: 12px 18px;
+            margin: 10px auto;
+            border-radius: 10px;
+            width: 50%;
+            text-align: center;
+            color: #05557a;
+            font-weight: 600;
+            border-left: 4px solid #0d6efd;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+
+</head>
+<body>
+
+{% for i in messages %}
+<div class="custom-message">
+  {{ i }}
+</div>
+{% endfor %}
+
+<div class="form-container">
+  <h2>Assigning Subjects</h2>
+
+  <form method="POST" action="/myapp/assignsubjects_post/">
+
+    <div class="mb-3">
+      <label for="subject" class="form-label">Subject Name</label>
+      <select name="subject" class="form-control" id="subject" required>
+        <option value="">Select Subject</option>
+        {% for sub in subjects %}
+        <option value="{{ sub.id }}">{{ sub.subname }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="staff" class="form-label">Staff Name</label>
+      <select name="staff" class="form-control" id="staff" required>
+        <option value="">Select Staff</option>
+        {% for st in staffs %}
+        <option value="{{ st.id }}">{{ st.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" name="submit" class="btn btn-primary w-100">
+      Add
+    </button>
+
+  </form>
+</div>
+
+</body>
+</html>
+{% endblock %}

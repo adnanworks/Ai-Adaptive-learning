@@ -1,0 +1,182 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#{{ i }}#}
+{#{% endfor %}#}
+{##}
+{#  <div class="center-card">#}
+{#    <div class="page-title">View Study Materials</div>#}
+{#    <table id="registrationTable" class="table table-striped table-bordered">#}
+{#      <thead>#}
+{#        <tr>#}
+{#          <th>Sl no</th>#}
+{#          <th>Subject Name</th>#}
+{#          <th>Staff Name</th>#}
+{#          <th>Date</th>#}
+{#          <th>Material</th>#}
+{#          <th>Edit</th>#}
+{#          <th>Delete</th>#}
+{#        </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#        {% for i in data %}#}
+{#          <tr>#}
+{#            <td>{{ forloop.counter }}</td>#}
+{#            <td>{{ i.SUBJECT.subname }}</td>#}
+{#            <td>{{ i.STAFF.name }}</td>#}
+{#            <td>{{ i.date }}</td>#}
+{#            <td><a href="{{ i.materials.url }}" download>{{ i.materials.name }}</a></td>#}
+{#            <td><a href="/myapp/edit_material_get/{{ i.id }}" class="edit">Edit</a></td>#}
+{#            <td><a href="/myapp/delete_studymaterial/{{ i.id }}" class="delete btn-delete">Delete</a></td>#}
+{#          </tr>#}
+{#        {% empty %}#}
+{#          <tr><td colspan="7" class="text-center">No Announcement available.</td></tr>#}
+{#        {% endfor %}#}
+{#      </tbody>#}
+{#    </table>#}
+{#  </div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+{% extends 'staff/home.html' %}
+{% block body %}
+
+<style>
+    .center-card {
+        background: #ffffff;
+        padding: 25px 30px;
+        border-radius: 16px;
+        max-width: 1000px;
+        margin: 30px auto;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #2b2f38;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    body {
+        background-color: lightcyan;
+    }
+
+    table {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    thead tr {
+        background: #0d6efd;
+        color: #fff;
+        text-align: left;
+    }
+
+    thead th {
+        padding: 12px;
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+    tbody tr {
+        transition: 0.2s;
+    }
+
+    tbody tr:hover {
+        background: rgba(13,110,253,0.08);
+    }
+
+    tbody td {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    a.edit {
+        padding: 6px 10px;
+        background: #ffc107;
+        color: #000;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+    a.edit:hover {
+        background: #e0a800;
+    }
+
+    .btn-delete {
+        padding: 6px 10px;
+        background: #dc3545;
+        color: #fff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+    .btn-delete:hover {
+        background: #b02a37;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(10px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+</style>
+
+{% for i in messages %}
+<p style="text-align:center; color:green; font-weight:500;">{{ i }}</p>
+{% endfor %}
+
+<div class="center-card">
+    <div class="page-title">View Study Materials</div>
+
+    <table id="registrationTable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Sl no</th>
+                <th>Subject Name</th>
+                <th>Staff Name</th>
+                <th>Date</th>
+                <th>Material</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.SUBJECT.subname }}</td>
+                <td>{{ i.STAFF.name }}</td>
+                <td>{{ i.date }}</td>
+                <td><a href="{{ i.materials.url }}" download>{{ i.materials.name }}</a></td>
+
+                <td><a href="/myapp/edit_material_get/{{ i.id }}" class="edit">Edit</a></td>
+
+                <td><a href="/myapp/delete_studymaterial/{{ i.id }}" class="btn-delete">Delete</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No Announcement available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <br><br><br><br>
+{% endblock %}

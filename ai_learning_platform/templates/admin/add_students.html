@@ -1,0 +1,255 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<form method="post" action="/myapp/add_student_post/" enctype="multipart/form-data">#}
+{#    {% csrf_token %}#}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label">Name</label>#}
+{#        <input type="text" class="form-control" name="name">#}
+{#    </div>#}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label">Email</label>#}
+{#        <input type="email" class="form-control" name="email">#}
+{#    </div>#}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label">Place</label>#}
+{#        <input type="text" class="form-control" name="place">#}
+{#    </div>#}
+{##}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label">Date of Birth</label>#}
+{#        <input type="date" class="form-control" name="dob">#}
+{#    </div>#}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label">Phone</label>#}
+{#        <input type="number" class="form-control" name="phone">#}
+{#    </div>#}
+{##}
+{##}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label d-block">Select Semester:</label>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="1st" name="sem" value="1st">#}
+{#            <label class="form-check-label" for="1st">1st</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="2nd" name="sem" value="2nd">#}
+{#            <label class="form-check-label" for="2nd">2nd</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="3rd" name="sem" value="3rd">#}
+{#            <label class="form-check-label" for="3rd">3rd</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="4th" name="sem" value="4th">#}
+{#            <label class="form-check-label" for="4th">4th</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="5th" name="sem" value="5th">#}
+{#            <label class="form-check-label" for="5th">5th</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="6th" name="sem" value="6th">#}
+{#            <label class="form-check-label" for="6th">6th</label>#}
+{#        </div>#}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="7th" name="sem" value="7th">#}
+{#            <label class="form-check-label" for="7th">7th</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check form-check-inline">#}
+{#            <input class="form-check-input" type="radio" id="8th" name="sem" value="8th">#}
+{#            <label class="form-check-label" for="8th">8th</label>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="mb-3">#}
+{#        <label class="form-label">Upload an Image</label>#}
+{#        <input type="file" class="form-control" name="photo">#}
+{#    </div>#}
+{##}
+{#    <div class="text-center">#}
+{#        <button type="submit" class="btn btn-primary w-100">ADD</button>#}
+{#    </div>#}
+{#</form>#}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+
+<style>
+    body {
+    background: #e0f7fa;
+}
+
+    .form-container {
+        max-width: 650px;
+        margin: 40px auto;
+    }
+
+    .card-modern {
+        background: #ffffff;
+        border: 1px solid #e6e6e6;
+        border-radius: 18px;
+        padding: 35px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+        transition: 0.3s;
+    }
+
+    .card-modern:hover {
+        box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+    }
+
+    .form-title {
+        font-size: 26px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #444;
+    }
+
+    .btn-submit {
+        font-size: 17px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+</style>
+
+
+<div class="form-container">
+    <div class="card-modern">
+
+        <div class="form-title">Add Student</div>
+
+        <form method="post" action="/myapp/add_student_post/" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Place</label>
+                <input type="text" class="form-control" name="place" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" name="dob" max="{{ today }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+                <input type="number" class="form-control" name="phone" id="phone" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label d-block">Select Semester:</label>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="1st" name="sem" value="1st" required>
+                    <label class="form-check-label" for="1st">1st</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="2nd" name="sem" value="2nd">
+                    <label class="form-check-label" for="2nd">2nd</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="3rd" name="sem" value="3rd">
+                    <label class="form-check-label" for="3rd">3rd</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="4th" name="sem" value="4th">
+                    <label class="form-check-label" for="4th">4th</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="5th" name="sem" value="5th">
+                    <label class="form-check-label" for="5th">5th</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="6th" name="sem" value="6th">
+                    <label class="form-check-label" for="6th">6th</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="7th" name="sem" value="7th">
+                    <label class="form-check-label" for="7th">7th</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="8th" name="sem" value="8th">
+                    <label class="form-check-label" for="8th">8th</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Upload an Image</label>
+                <input type="file" class="form-control" name="photo" required>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-100 btn-submit">ADD</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+    function validateForm() {
+        let phone = document.getElementById("phone").value;
+
+        // Phone must start with 6/7/8/9 and must be 10 digits
+        let phoneRegex = /^[6-9]\d{9}$/;
+
+        if (!phoneRegex.test(phone)) {
+            alert("Phone number must start with 6, 7, 8, or 9 and must be exactly 10 digits.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+{% endblock %}

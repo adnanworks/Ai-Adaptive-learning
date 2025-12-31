@@ -1,0 +1,218 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#  {{ i }}#}
+{#{% endfor %}#}
+{#<div class="table-wrapper">#}
+{#  <h2>Assigned Subjects For Staffs</h2>#}
+{#  <table id="registrationTable" class="table table-striped table-bordered">#}
+{#    <thead>#}
+{#      <tr>#}
+{#        <th>Sl no</th>#}
+{#        <th>Staff name</th>#}
+{#        <th>Subject Name</th>#}
+{#        <th>Edit Details</th>#}
+{#        <th>Delete Details</th>#}
+{#      </tr>#}
+{#    </thead>#}
+{#    <tbody>#}
+{#      {% for i in data %}#}
+{#      <tr>#}
+{#        <td>{{ forloop.counter }}</td>#}
+{#        <td>{{ i.STAFF.name }}</td>#}
+{#        <td>{{ i.SUBJECT.subname }}</td>#}
+{#        <td><a href="/myapp/editassigned_get/{{ i.id }}" class="btn-link edit" onclick="return confirmEdit(event)">Edit</a></td>#}
+{#        <td><a href="/myapp/delete_assigned/{{ i.id }}" class="btn-link delete" onclick="return confirmDelete(event)">Delete</a></td>#}
+{#      </tr>#}
+{#      {% empty %}#}
+{#      <tr>#}
+{#        <td colspan="5" class="text-center">No details available.</td>#}
+{#      </tr>#}
+{#      {% endfor %}#}
+{#    </tbody>#}
+{#  </table>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assigned Subjects</title>
+
+<style>
+    body {
+        background: #f0f7ff;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .table-wrapper {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 18px;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .table-wrapper h2 {
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    table {
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+
+    thead tr {
+        background: #e7f1ff;
+        color: #003b7a;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    th, td {
+        padding: 14px !important;
+        vertical-align: middle !important;
+        font-size: 0.95rem;
+    }
+
+    /* Hover effect */
+    tbody tr:hover {
+        background: #f5faff !important;
+        transition: 0.3s;
+    }
+
+    /* Edit & Delete Links */
+    .btn-link {
+        text-decoration: none;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        display: inline-block;
+        transition: 0.3s ease;
+    }
+
+    .btn-link.edit {
+        color: #0d6efd;
+        background: #e3f0ff;
+    }
+    .btn-link.edit:hover {
+        background: #cfe3ff;
+    }
+
+    .btn-link.delete {
+        color: #dc3545;
+        background: #ffe6e8;
+    }
+    .btn-link.delete:hover {
+        background: #ffd4d8;
+    }
+
+    /* Message box */
+    .custom-message {
+        background: #dff4ff;
+        padding: 12px 18px;
+        margin: 10px auto;
+        border-radius: 10px;
+        width: 50%;
+        text-align: center;
+        color: #05557a;
+        font-weight: 600;
+        border-left: 4px solid #0d6efd;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    function confirmDelete(event) {
+        if (!confirm("Are you sure you want to delete this assigned subject?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    function confirmEdit(event) {
+        if (!confirm("Do you want to edit this assigned subject?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+</script>
+
+</head>
+<body>
+
+{% for i in messages %}
+<div class="custom-message">
+  {{ i }}
+</div>
+{% endfor %}
+
+<div class="table-wrapper">
+  <h2>Assigned Subjects For Staffs</h2>
+
+  <table id="registrationTable" class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Sl no</th>
+        <th>Staff name</th>
+        <th>Subject Name</th>
+        <th>Edit Details</th>
+        <th>Delete Details</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for i in data %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.STAFF.name }}</td>
+        <td>{{ i.SUBJECT.subname }}</td>
+
+        <td>
+            <a href="/myapp/editassigned_get/{{ i.id }}" class="btn-link edit" onclick="return confirmEdit(event)">Edit</a>
+        </td>
+
+        <td>
+            <a href="/myapp/delete_assigned/{{ i.id }}" class="btn-link delete" onclick="return confirmDelete(event)">Delete</a>
+        </td>
+      </tr>
+
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center">No details available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+</div>
+
+</body>
+</html>
+{% endblock %}

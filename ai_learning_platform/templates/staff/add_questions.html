@@ -1,0 +1,173 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{##}
+{#<h2>Add Question</h2>#}
+{##}
+{##}
+{#{% if messages %}#}
+{#    {% for i in messages %}#}
+{#        <p>{{ i }}</p>#}
+{#    {% endfor %}#}
+{#{% endif %}#}
+{##}
+{#<form method="POST" action="/myapp/add_question_post/">#}
+{#    {% csrf_token %}#}
+{#    <input type="hidden" name="test" value="{{ i.id }}">#}
+{##}
+{#    <label for="question">Question:</label><br>#}
+{#    <textarea name="question" id="question" rows="3" required></textarea>#}
+{#    <br><br>#}
+{##}
+{#    <label for="option1">Option 1:</label><br>#}
+{#    <input type="text" name="option1" id="option1" required>#}
+{#    <br><br>#}
+{##}
+{#    <label for="option2">Option 2:</label><br>#}
+{#    <input type="text" name="option2" id="option2" required>#}
+{#    <br><br>#}
+{##}
+{#    <label for="option3">Option 3:</label><br>#}
+{#    <input type="text" name="option3" id="option3" required>#}
+{#    <br><br>#}
+{##}
+{#    <label for="option4">Option 4:</label><br>#}
+{#    <input type="text" name="option4" id="option4" required>#}
+{#    <br><br>#}
+{##}
+{#    <label for="answer">Answer:</label><br>#}
+{#    <input type="text" name="answer" id="answer" required>#}
+{#    <br><br>#}
+{##}
+{#    <button type="submit" name="submit">Add Question</button>#}
+{#</form>#}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Question</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            color: #4f46e5;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        textarea, input[type="text"], button {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        button {
+            background-color: #4f46e5;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+        }
+
+        p {
+            text-align: center;
+            color: #16a34a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Add Question</h2>
+
+{% if messages %}
+    {% for i in messages %}
+        <p>{{ i }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="POST" action="/myapp/add_question_post/">
+    {% csrf_token %}
+    <input type="hidden" name="test" value="{{ i.id }}">
+
+    <label for="question">Question:</label>
+    <textarea name="question" id="question" rows="3" required></textarea>
+
+    <label for="option1">Option 1:</label>
+    <input type="text" name="option1" id="option1" required>
+
+    <label for="option2">Option 2:</label>
+    <input type="text" name="option2" id="option2" required>
+
+    <label for="option3">Option 3:</label>
+    <input type="text" name="option3" id="option3" required>
+
+    <label for="option4">Option 4:</label>
+    <input type="text" name="option4" id="option4" required>
+
+    <label for="answer">Answer:</label>
+    <input type="text" name="answer" id="answer" required>
+
+    <label for="score">Score:</label>
+    <input type="number" name="score" id="score" required>
+    <br><br><br>
+
+    <button type="submit" name="submit">Add Question</button>
+</form>
+
+</body>
+</html>
+{% endblock %}

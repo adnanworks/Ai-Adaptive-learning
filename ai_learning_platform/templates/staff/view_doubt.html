@@ -1,0 +1,180 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<div class="center-card">#}
+{#    <div class="page-title">View Doubts</div>#}
+{##}
+{#    <table id="registrationTable" class="table table-striped table-bordered">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>Sl no</th>#}
+{#                <th>Doubt</th>#}
+{#                <th>Student</th>#}
+{#                <th>Date</th>#}
+{#                <th>Reply</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{##}
+{#        <tbody>#}
+{#            {% for i in data %}#}
+{#            <tr>#}
+{#                <td>{{ forloop.counter }}</td>#}
+{#                <td>{{ i.doubt }}</td>#}
+{#                <td>{{ i.STUDENT.name }}</td>#}
+{#                <td>{{ i.date }}</td>#}
+{#                <td>#}
+{#                {% if i.reply == 'pending' %}#}
+{#                    <a href="/myapp/staff_doubt_reply_get/{{ i.id }}" class="reply-btn">#}
+{#                        Send Reply#}
+{#                    </a>#}
+{#                {% else %}#}
+{#                    <div class="reply-text">#}
+{#                        {{ i.reply }}#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#            </td>#}
+{#            </tr>#}
+{#            {% empty %}#}
+{#            <tr>#}
+{#                <td colspan="7" class="text-center">No Doubts available.</td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+
+<style>
+
+    .center-card {
+        width: 90%;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #dcdcdc;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    body{
+        background-color: lightcyan;
+    }
+
+    /* Title */
+    .page-title {
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+        color: #333;
+        margin-bottom: 22px;
+    }
+
+    /* Table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+        color: #333;
+    }
+
+    thead th {
+        background: #fafafa;
+        padding: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        border-bottom: 2px solid #e0e0e0;
+        text-align: left;
+    }
+
+    tbody td {
+        padding: 12px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    tbody tr:hover {
+        background: #f7f7f7;
+        transition: 0.2s;
+    }
+
+    /* Reply Button */
+    .reply-btn {
+        background: #4a5cff;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .reply-btn:hover {
+        background: #3c4ae5;
+    }
+
+    /* Reply Text */
+    .reply-text {
+        color: #1a8f1a;
+        font-weight: 600;
+    }
+
+    .text-center {
+        text-align: center;
+        padding: 15px;
+        color: #555;
+    }
+</style>
+
+<div class="center-card">
+    <div class="page-title">View Doubts</div>
+
+    <table id="registrationTable">
+        <thead>
+            <tr>
+                <th>Sl no</th>
+                <th>Doubt</th>
+                <th>Student</th>
+                <th>Date</th>
+                <th>Reply</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.doubt }}</td>
+                <td>{{ i.STUDENT.name }}</td>
+                <td>{{ i.date }}</td>
+                <td>
+                    {% if i.reply == 'pending' %}
+                        <a href="/myapp/staff_doubt_reply_get/{{ i.id }}" class="reply-btn">Send Reply</a>
+                    {% else %}
+                        <div class="reply-text">{{ i.reply }}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No Doubts available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

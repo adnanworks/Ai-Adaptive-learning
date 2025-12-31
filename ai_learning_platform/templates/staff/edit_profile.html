@@ -1,0 +1,214 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{##}
+{#<h2>Edit Profile</h2>#}
+{##}
+{#<form action="/myapp/staff_edit_profile_post/" method="post" enctype="multipart/form-data">#}
+{#    <input type="hidden" name="id" value="{{ i.id }}">#}
+{##}
+{#    <table>#}
+{##}
+{#        <tr>#}
+{#            <td>Full Name</td>#}
+{#            <td><input type="text" name="name" value="{{ i.name }}"></td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Email Address</td>#}
+{#            <td><input type="email" name="email" value="{{ i.email }}"></td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Location</td>#}
+{#            <td><input type="text" name="place" value="{{ i.place }}"></td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Date of Birth</td>#}
+{#            <td><input type="date" name="dob" value="{{ i.dob }}"></td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Phone Number</td>#}
+{#            <td><input type="text" name="phone" value="{{ i.phone }}"></td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Qualification</td>#}
+{#            <td><input type="text" name="qualification" value="{{ i.qualification }}"></td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Photo</td>#}
+{#            <td><input type="file" name="photo"></td>#}
+{#        </tr>#}
+{##}
+{#    </table>#}
+{##}
+{#    <br>#}
+{##}
+{#    <button type="submit">Save</button>#}
+{##}
+{#</form>#}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .profile-card {
+            max-width: 650px;
+            margin: 40px auto;
+            background: #d9f7ff; /* light cyan */
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #005a63;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+            color: #00444a;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #8ee3f3;
+            transition: 0.25s;
+            background: #fff;
+        }
+
+        .form-control:focus {
+            border-color: #00b7c6;
+            box-shadow: 0 0 0 0.2rem rgba(0, 183, 198, 0.25);
+            outline: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: #0097a7;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 17px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #007c8a;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="profile-card">
+    <h2>Edit Profile</h2>
+
+    <form action="/myapp/staff_edit_profile_post/" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <input type="hidden" name="id" value="{{ i.id }}">
+
+        <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" value="{{ i.name }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" value="{{ i.email }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" name="place" value="{{ i.place }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" name="dob" value="{{ i.dob }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" name="phone" value="{{ i.phone }}" class="form-control" id="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Qualification</label>
+            <input type="text" name="qualification" value="{{ i.qualification }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Photo</label>
+            <input type="file" name="photo" class="form-control">
+        </div>
+
+        <button type="submit" class="btn-submit">Save</button>
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    let phone = document.getElementById("phone").value;
+
+    // Phone: Starts with 6/7/8/9 and total 10 digits
+    let phoneRegex = /^[6-9][0-9]{9}$/;
+
+    if (!phoneRegex.test(phone)) {
+        alert("Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,138 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<div class="center-card">#}
+{#    <div class="page-title">View Notifications</div>#}
+{##}
+{#    <table id="registrationTable" class="table table-striped table-bordered">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>Sl no</th>#}
+{#                <th>Notification</th>#}
+{#                <th>Date</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{##}
+{#        <tbody>#}
+{#            {% for i in data %}#}
+{#            <tr>#}
+{#                <td>{{ forloop.counter }}</td>#}
+{#                <td>{{ i.notification }}</td>#}
+{#                <td>{{ i.date }}</td>#}
+{#            </tr>#}
+{#            {% empty %}#}
+{#            <tr>#}
+{#                <td colspan="7" class="text-center">No Announcement available.</td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .center-card {
+            width: 60%;             /* Smaller width */
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        body {
+            background-color: lightcyan;
+        }
+
+        /* Modern Compact Table */
+        #registrationTable {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        #registrationTable thead tr {
+            background: linear-gradient(135deg, #eef3ff, #e3e9ff);
+            color: #3b3b3b;
+            font-weight: 600;
+        }
+
+        #registrationTable th,
+        #registrationTable td {
+            padding: 10px 14px;     /* Smaller row height */
+            font-size: 14px;        /* Slightly smaller font */
+        }
+
+        #registrationTable tbody tr:hover {
+            background: #f7f9ff;
+            transform: scale(1.002);
+        }
+
+        #registrationTable td.text-center {
+            text-align: center;
+            padding: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="center-card">
+    <div class="page-title">View Notifications</div>
+
+    <table id="registrationTable">
+        <thead>
+            <tr>
+                <th>Sl no</th>
+                <th>Notification</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.notification }}</td>
+                <td>{{ i.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No Announcement available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html><br><br><br>
+{% endblock %}
+

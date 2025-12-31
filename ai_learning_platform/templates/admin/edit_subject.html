@@ -1,0 +1,338 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#  <div class="container">#}
+{#    <h2>Edit Subject</h2>#}
+{#    <form method="POST" action="/myapp/editsubject/" onsubmit="return confirmEdit()">#}
+{#      <div class="mb-4">#}
+{#        <label for="name" class="form-label">Subject Name</label>#}
+{#        <input#}
+{#          type="text"#}
+{#          name="name"#}
+{#          class="form-control"#}
+{#          id="name"#}
+{#          value="{{ i.subname }}"#}
+{#          required#}
+{#          autocomplete="off"#}
+{#        />#}
+{#      </div>#}
+{##}
+{#      <div class="mb-4">#}
+{#        <label class="form-label d-block">Semester</label>#}
+{#        <div class="d-flex flex-wrap gap-3">#}
+{#          <!-- radio inputs with checked logic remain the same -->#}
+{#          <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="1st"#}
+{#              value="1st"#}
+{#              {% if i.semester == "1st" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="1st">1st</label>#}
+{#          </div>#}
+{#          <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="2nd"#}
+{#              value="2nd"#}
+{#              {% if i.semester == "2nd" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="2nd">2nd</label>#}
+{#          </div>#}
+{#          <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="3rd"#}
+{#              value="3rd"#}
+{#              {% if i.semester == "3rd" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="3rd">3rd</label>#}
+{#          </div>#}
+{#          <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="4th"#}
+{#              value="4th"#}
+{#              {% if i.semester == "4th" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="4th">4th</label>#}
+{#          </div>#}
+{#          <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="5th"#}
+{#              value="5th"#}
+{#              {% if i.semester == "5th" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="5th">5th</label>#}
+{#          </div>#}
+{#          <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="6th"#}
+{#              value="6th"#}
+{#              {% if i.semester == "6th" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="6th">6th</label>#}
+{#          </div>#}
+{#        <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="7th"#}
+{#              value="7th"#}
+{#              {% if i.semester == "7th" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="7th">7th</label>#}
+{#          </div>#}
+{#        <div class="form-check form-check-inline">#}
+{#            <input#}
+{#              class="form-check-input"#}
+{#              type="radio"#}
+{#              name="sem"#}
+{#              id="8th"#}
+{#              value="8th"#}
+{#              {% if i.semester == "8th" %}checked{% endif %}#}
+{#              required#}
+{#            />#}
+{#            <label class="form-check-label" for="8th">8th</label>#}
+{#          </div>#}
+{##}
+{##}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <input type="hidden" name="id" value="{{ i.id }}" />#}
+{##}
+{#      <button type="submit" name="submit" value="edit" class="btn btn-primary">Edit</button>#}
+{#    </form>#}
+{#  </div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Subject</title>
+
+    <style>
+        /* ---------- ISOLATED PAGE WRAPPER ---------- */
+        .edit-page {
+            background: #d9f7ff; /* light cyan */
+            padding: 40px 0;
+        }
+
+        .edit-page .edit-card {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Titles only inside this page */
+        .edit-page h2 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #015d74;
+        }
+
+        .edit-page label {
+            font-weight: 600;
+            color: #015d74;
+        }
+
+        .edit-page .form-control {
+            border-radius: 12px;
+            padding: 10px 14px;
+            border: 1px solid #9ee7f4;
+            background: #faffff;
+        }
+
+        .edit-page .form-control:focus {
+            border-color: #00a0b5;
+            box-shadow: 0 0 8px rgba(0, 160, 181, 0.35);
+        }
+
+        .edit-page .radio-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .edit-page .form-check-input:checked {
+            background-color: #008b9e;
+            border-color: #008b9e;
+        }
+
+        .edit-page .btn-primary {
+            background-color: #0097a7;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: 0.2s ease;
+        }
+
+        .edit-page .btn-primary:hover {
+            background-color: #007f8c;
+            transform: translateY(-2px);
+        }
+
+        .edit-page .form-check-label {
+            font-weight: 500;
+            color: #015d74;
+        }
+    </style>
+
+    <script>
+        function confirmEdit() {
+            return confirm("Are you sure you want to update this subject?");
+        }
+    </script>
+</head>
+
+<body>
+
+
+    <div class="edit-page">
+        <div class="edit-card">
+
+            <h2>Edit Subject</h2>
+
+            <form method="POST" action="/myapp/editsubject_post/" onsubmit="return confirmEdit()">
+
+                <div class="mb-4">
+                    <label for="name">Subject Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        class="form-control"
+                        value="{{ i.subname }}"
+                        required
+                        autocomplete="off"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label>Semester</label>
+                    <div class="radio-box">
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="1st" value="1st"
+                                class="form-check-input"
+                                {% if i.semester == "1st" %}checked{% endif %} required>
+                            <label for="1st" class="form-check-label">1st</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="2nd" value="2nd"
+                                class="form-check-input"
+                                {% if i.semester == "2nd" %}checked{% endif %} required>
+                            <label for="2nd" class="form-check-label">2nd</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="3rd" value="3rd"
+                                class="form-check-input"
+                                {% if i.semester == "3rd" %}checked{% endif %} required>
+                            <label for="3rd" class="form-check-label">3rd</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="4th" value="4th"
+                                class="form-check-input"
+                                {% if i.semester == "4th" %}checked{% endif %} required>
+                            <label for="4th" class="form-check-label">4th</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="5th" value="5th"
+                                class="form-check-input"
+                                {% if i.semester == "5th" %}checked{% endif %} required>
+                            <label for="5th" class="form-check-label">5th</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="6th" value="6th"
+                                class="form-check-input"
+                                {% if i.semester == "6th" %}checked{% endif %} required>
+                            <label for="6th" class="form-check-label">6th</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="7th" value="7th"
+                                class="form-check-input"
+                                {% if i.semester == "7th" %}checked{% endif %} required>
+                            <label for="7th" class="form-check-label">7th</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="sem" id="8th" value="8th"
+                                class="form-check-input"
+                                {% if i.semester == "8th" %}checked{% endif %} required>
+                            <label for="8th" class="form-check-label">8th</label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <input type="hidden" name="id" value="{{ i.id }}">
+
+                <button type="submit" name="submit" value="edit" class="btn btn-primary">
+                    Update Subject
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
+{% endblock %}
+

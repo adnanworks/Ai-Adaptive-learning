@@ -1,0 +1,214 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<div class="form-panel">#}
+{#  <h2>Add Subjects</h2>#}
+{##}
+{#  <form method="POST" action="/myapp/add_subject_post/">#}
+{#    {% csrf_token %}#}
+{##}
+{#    <div class="row mb-3 align-items-center">#}
+{#      <label for="name" class="col-sm-4 col-form-label">Subject Name</label>#}
+{#      <div class="col-sm-8">#}
+{#        <input type="text" id="name" name="name" class="form-control" required />#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <fieldset class="row mb-4">#}
+{#      <legend class="col-form-label col-sm-4 pt-0">Semester</legend>#}
+{#      <div class="col-sm-8 d-flex flex-wrap gap-3">#}
+{##}
+{#        <div class="form-check">#}
+{#          <input class="form-check-input" type="radio" name="sem" id="1st" value="1st" required />#}
+{#          <label class="form-check-label" for="1st">1st</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check">#}
+{#          <input class="form-check-input" type="radio" name="sem" id="2nd" value="2nd" required />#}
+{#          <label class="form-check-label" for="2nd">2nd</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check">#}
+{#          <input class="form-check-input" type="radio" name="sem" id="3rd" value="3rd" required />#}
+{#          <label class="form-check-label" for="3rd">3rd</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check">#}
+{#          <input class="form-check-input" type="radio" name="sem" id="4th" value="4th" required />#}
+{#          <label class="form-check-label" for="4th">4th</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check">#}
+{#          <input class="form-check-input" type="radio" name="sem" id="5th" value="5th" required />#}
+{#          <label class="form-check-label" for="5th">5th</label>#}
+{#        </div>#}
+{##}
+{#        <div class="form-check">#}
+{#          <input class="form-check-input" type="radio" name="sem" id="6th" value="6th" required />#}
+{#          <label class="form-check-label" for="6th">6th</label>#}
+{#        </div>#}
+{##}
+{#      </div>#}
+{#    </fieldset>#}
+{##}
+{#    <div class="row mb-3">#}
+{#      <div class="offset-sm-4 col-sm-8">#}
+{#        <button type="submit" name="submit" class="btn btn-primary">Add</button>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#  </form>#}
+{#</div>#}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+
+<style>
+    body {
+        background: #e8faff !important;
+    }
+
+    .form-panel {
+        width: 60%;
+        margin: 40px auto;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(6px);
+        padding: 35px 45px;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        animation: fadeIn .4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(10px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #0088a9;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 10px 14px;
+        border: 1px solid #b8e9f2;
+    }
+
+    .form-control:focus {
+        border-color: #00b4d8;
+        box-shadow: 0 0 0 0.15rem rgba(0,180,216,.25);
+    }
+
+    fieldset legend {
+        font-size: 16px;
+        font-weight: 600;
+        color: #00788a;
+    }
+
+    .form-check-input {
+        border: 2px solid #00a8cc;
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: #00a8cc;
+        border-color: #00a8cc;
+    }
+
+    button.btn-primary {
+        background: #00a8cc;
+        border: none;
+        padding: 10px 26px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    button.btn-primary:hover {
+        background: #007c98;
+    }
+</style>
+
+<div class="form-panel">
+  <h2>Add Subjects</h2>
+
+  <form method="POST" action="/myapp/add_subject_post/">
+    {% csrf_token %}
+
+    <div class="row mb-3 align-items-center">
+      <label for="name" class="col-sm-4 col-form-label">Subject Name</label>
+      <div class="col-sm-8">
+        <input type="text" id="name" name="name" class="form-control" required />
+      </div>
+    </div>
+
+    <fieldset class="row mb-4">
+      <legend class="col-form-label col-sm-4 pt-0">Semester</legend>
+      <div class="col-sm-8 d-flex flex-wrap gap-3">
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="1st" value="1st" required />
+          <label class="form-check-label" for="1st">1st</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="2nd" value="2nd" required />
+          <label class="form-check-label" for="2nd">2nd</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="3rd" value="3rd" required />
+          <label class="form-check-label" for="3rd">3rd</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="4th" value="4th" required />
+          <label class="form-check-label" for="4th">4th</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="5th" value="5th" required />
+          <label class="form-check-label" for="5th">5th</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="6th" value="6th" required />
+          <label class="form-check-label" for="6th">6th</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="7th" value="7th" required />
+          <label class="form-check-label" for="7th">7th</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="sem" id="8th" value="8th" required />
+          <label class="form-check-label" for="8th">8th</label>
+        </div>
+
+      </div>
+    </fieldset>
+
+    <div class="row mb-3">
+      <div class="offset-sm-4 col-sm-8">
+        <button type="submit" name="submit" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

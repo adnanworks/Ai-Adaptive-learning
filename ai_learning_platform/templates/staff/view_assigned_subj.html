@@ -1,0 +1,146 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#  {{ i }}#}
+{#{% endfor %}#}
+{##}
+{#<div class="table-wrapper">#}
+{#  <h2>Assigned Subjects For Staffs</h2>#}
+{#  <table id="registrationTable" class="table table-striped table-bordered">#}
+{#    <thead>#}
+{#      <tr>#}
+{#        <th>Sl no</th>#}
+{#        <th>Staff name</th>#}
+{#        <th>Subject Name</th>#}
+{#      </tr>#}
+{#    </thead>#}
+{#    <tbody>#}
+{#      {% for i in assi %}#}
+{#      <tr>#}
+{#        <td>{{ forloop.counter }}</td>#}
+{#        <td>{{ i.STAFF.name }}</td>#}
+{#        <td>{{ i.SUBJECT.subname }}</td>#}
+{#      </tr>#}
+{#      {% empty %}#}
+{#      <tr>#}
+{#        <td colspan="3" class="text-center">No subjects assigned</td>#}
+{#      </tr>#}
+{#      {% endfor %}#}
+{#    </tbody>#}
+{#  </table>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+{% extends 'staff/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        /* Wrapper */
+        .table-wrapper {
+            width: 70%;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
+        }
+        body {
+            background-color: lightcyan;
+        }
+
+        .table-wrapper h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 30px;
+            font-weight: 600;
+            color: #0d6efd;
+        }
+
+
+        #registrationTable {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            font-size: 14px;
+        }
+
+        #registrationTable thead th {
+            background: #0d6efd;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px 6px 0 0;
+        }
+
+        #registrationTable tbody tr {
+            background: #f8faff;
+            transition: 0.2s;
+        }
+
+        #registrationTable tbody tr:hover {
+            background: #e6eeff;
+        }
+
+        #registrationTable tbody td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #dbe2ee;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+{% for i in messages %}
+  {{ i }}
+{% endfor %}
+
+<div class="table-wrapper">
+  <h2>Assigned Subjects For You</h2>
+
+  <table id="registrationTable" class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Sl no</th>
+        <th>Staff name</th>
+        <th>Subject Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in assi %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.STAFF.name }}</td>
+        <td>{{ i.SUBJECT.subname }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center">No subjects assigned</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<br><br><br>
+
+</body>
+</html>
+{% endblock %}
+

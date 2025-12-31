@@ -1,0 +1,273 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<form method="POST" action="/myapp/editstudent_post/" enctype="multipart/form-data" id="editStudentForm" novalidate>#}
+{#    <table>#}
+{##}
+{#        <tr>#}
+{#            <td><label for="name">Full Name</label></td>#}
+{#            <td>#}
+{#                <input type="text" id="name" name="name" value="{{ i.name }}" required class="form-control">#}
+{#                <span class="invalid-feedback">Please enter the full name.</span>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td><label for="email">Email</label></td>#}
+{#            <td>#}
+{#                <input type="email" id="email" name="email" value="{{ i.email }}" required class="form-control">#}
+{#                <span class="invalid-feedback">Please enter a valid email.</span>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td><label for="place">Place</label></td>#}
+{#            <td>#}
+{#                <input type="text" id="place" name="place" value="{{ i.place }}" required class="form-control">#}
+{#                <span class="invalid-feedback">Please enter the place.</span>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td><label for="dob">Date of Birth</label></td>#}
+{#            <td>#}
+{#                <input type="date" id="dob" name="dob" value="{{ i.dob }}" required class="form-control">#}
+{#                <span class="invalid-feedback">Please enter a valid date.</span>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td><label for="phone">Phone</label></td>#}
+{#            <td>#}
+{#                <input type="tel" id="phone" name="phone" pattern="^[6-9][0-9]{9}$" value="{{ i.phone }}" required class="form-control">#}
+{#                <span class="invalid-feedback">Phone must be 10 digits and start with 6, 7, 8, or 9.</span>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>Semester</td>#}
+{#            <td>#}
+{#                <label><input type="radio" name="sem" value="1st" {% if i.semester == "1st" %}checked{% endif %}> 1st</label>#}
+{#                <label><input type="radio" name="sem" value="2nd" {% if i.semester == "2nd" %}checked{% endif %}> 2nd</label>#}
+{#                <label><input type="radio" name="sem" value="3rd" {% if i.semester == "3rd" %}checked{% endif %}> 3rd</label>#}
+{#                <label><input type="radio" name="sem" value="4th" {% if i.semester == "4th" %}checked{% endif %}> 4th</label>#}
+{#                <label><input type="radio" name="sem" value="5th" {% if i.semester == "5th" %}checked{% endif %}> 5th</label>#}
+{#                <label><input type="radio" name="sem" value="6th" {% if i.semester == "6th" %}checked{% endif %}> 6th</label>#}
+{#                <label><input type="radio" name="sem" value="7th" {% if i.semester == "7th" %}checked{% endif %}> 7th</label>#}
+{#                <label><input type="radio" name="sem" value="8th" {% if i.semester == "8th" %}checked{% endif %}> 8th</label>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td><label for="photo">Upload Photo</label></td>#}
+{#            <td>#}
+{#                <input type="file" id="photo" name="photo" accept="image/*" class="form-control">#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td></td>#}
+{#            <td>#}
+{#                <input type="hidden" name="id" value="{{ i.id }}">#}
+{#                <button type="submit" name="submit" value="edit" id="editBtn" class="btn btn-primary">#}
+{#                    Edit#}
+{#                </button>#}
+{#            </td>#}
+{#        </tr>#}
+{##}
+{#    </table>#}
+{#</form>#}
+{##}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Student</title>
+
+    <style>
+        table {
+            width: 70%;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 30px;
+            border-collapse: separate;
+            border-spacing: 0 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        td:first-child {
+            font-weight: 600;
+            width: 25%;
+            padding-right: 10px;
+        }
+
+        label {
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="file"],
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #d0d0d0;
+            transition: 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 4px rgba(13,110,253,0.3);
+        }
+
+        #editBtn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .invalid-feedback {
+            color: red;
+            font-size: 13px;
+            display: none;
+        }
+
+        .was-validated input:invalid + .invalid-feedback {
+            display: block;
+        }
+
+        .sem-row label {
+            margin-right: 12px;
+            padding: 6px 10px;
+            background: #f6f6f6;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .sem-row input[type="radio"] {
+            margin-right: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<form method="POST" action="/myapp/editstudent_post/" enctype="multipart/form-data"
+      id="editStudentForm" novalidate>
+    {% csrf_token %}
+
+    <table>
+
+        <tr>
+            <td><label for="name">Full Name</label></td>
+            <td>
+                <input type="text" id="name" name="name" value="{{ i.name }}" required class="form-control">
+                <span class="invalid-feedback">Please enter the full name.</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="email">Email</label></td>
+            <td>
+                <input type="email" id="email" name="email" value="{{ i.email }}" required class="form-control">
+                <span class="invalid-feedback">Please enter a valid email.</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="place">Place</label></td>
+            <td>
+                <input type="text" id="place" name="place" value="{{ i.place }}" required class="form-control">
+                <span class="invalid-feedback">Please enter the place.</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="dob">Date of Birth</label></td>
+            <td>
+                <input type="date" id="dob" name="dob" value="{{ i.dob }}" required class="form-control">
+                <span class="invalid-feedback">Please enter a valid date.</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="phone">Phone</label></td>
+            <td>
+                <input type="tel" id="phone" name="phone"
+                       pattern="^[6-9][0-9]{9}$"
+                       value="{{ i.phone }}" required class="form-control">
+                <span class="invalid-feedback">Phone must start with 6/7/8/9 and be 10 digits.</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Semester</td>
+            <td class="sem-row">
+                <label><input type="radio" name="sem" value="1st" {% if i.semester == "1st" %}checked{% endif %}> 1st</label>
+                <label><input type="radio" name="sem" value="2nd" {% if i.semester == "2nd" %}checked{% endif %}> 2nd</label>
+                <label><input type="radio" name="sem" value="3rd" {% if i.semester == "3rd" %}checked{% endif %}> 3rd</label>
+                <label><input type="radio" name="sem" value="4th" {% if i.semester == "4th" %}checked{% endif %}> 4th</label>
+                <label><input type="radio" name="sem" value="5th" {% if i.semester == "5th" %}checked{% endif %}> 5th</label>
+                <label><input type="radio" name="sem" value="6th" {% if i.semester == "6th" %}checked{% endif %}> 6th</label>
+                <label><input type="radio" name="sem" value="7th" {% if i.semester == "7th" %}checked{% endif %}> 7th</label>
+                <label><input type="radio" name="sem" value="8th" {% if i.semester == "8th" %}checked{% endif %}> 8th</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="photo">Upload Photo</label></td>
+            <td>
+                <input type="file" id="photo" name="photo" accept="image/*" class="form-control">
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>
+                <input type="hidden" name="id" value="{{ i.id }}">
+                <button type="submit" name="submit" value="edit" id="editBtn" class="btn btn-primary">
+                    Edit
+                </button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+<script>
+(() => {
+    const form = document.getElementById("editStudentForm");
+
+    form.addEventListener("submit", function (e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            form.classList.add("was-validated");
+        }
+    });
+})();
+</script>
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,133 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#  {{ i }}#}
+{#{% endfor %}#}
+{#<div class="container">#}
+{#  <h2>Edit Assigned details</h2>#}
+{#  <form method="POST" action="/myapp/editassigned_post/" class="needs-validation" novalidate>#}
+{#    <div class="row mb-3">#}
+{#      <label for="subject" class="col-sm-4 col-form-label">Subject Name</label>#}
+{#      <div class="col-sm-8">#}
+{#        <select name="subject" class="form-control" id="subject" required>#}
+{#          <option value="">Select Subject</option>#}
+{#          {% for sub in subjects %}#}
+{#            <option value="{{ sub.id }}" {% if i.SUBJECT.subname == sub.subname %}selected{% endif %}>{{ sub.subname }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#        <div class="invalid-feedback">Please select a subject.</div>#}
+{#      </div>#}
+{#    </div>#}
+{#    <div class="row mb-3">#}
+{#      <label for="staff" class="col-sm-4 col-form-label">Staff Name</label>#}
+{#      <div class="col-sm-8">#}
+{#        <select name="staff" class="form-control" id="staff" required>#}
+{#          <option value="">Select Staff</option>#}
+{#          {% for st in staffs %}#}
+{#            <option value="{{ st.id }}" {% if i.STAFF.name == st.name %}selected{% endif %}>{{ st.name }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#        <div class="invalid-feedback">Please select a staff member.</div>#}
+{#      </div>#}
+{#    </div>#}
+{#    <input type="hidden" name="id" value="{{ i.id }}" />#}
+{#    <div class="row mb-3">#}
+{#      <div class="offset-sm-4 col-sm-8 d-grid">#}
+{#        <button type="submit" name="submit" class="btn btn-primary">Update</button>#}
+{#      </div>#}
+{#    </div>#}
+{#  </form>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+
+<div class="my-form-container">
+  <h2>Edit Assigned Details</h2>
+
+  <form method="POST" action="/myapp/editassigned_post/">
+    {% csrf_token %}
+
+    <input type="hidden" name="id" value="{{ i.id }}">
+
+    <div class="form-row">
+      <label>Subject</label>
+      <select name="subject" class="my-input" required>
+        <option value="">Select Subject</option>
+        {% for sub in subjects %}
+          <option value="{{ sub.id }}" {% if i.SUBJECT.id == sub.id %}selected{% endif %}>{{ sub.subname }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>Staff</label>
+      <select name="staff" class="my-input" required>
+        <option value="">Select Staff</option>
+        {% for st in staffs %}
+          <option value="{{ st.id }}" {% if i.STAFF.id == st.id %}selected{% endif %}>{{ st.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="my-submit-btn">Update</button>
+
+  </form>
+</div>
+
+<style>
+/* SCOPED ONLY INSIDE my-form-container */
+.my-form-container {
+    width: 60%;
+    margin: 40px auto;
+    background: #E0FFFF; /* light cyan */
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.my-form-container h2 {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    margin-bottom: 18px;
+}
+
+.form-row label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.my-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+}
+
+/* Only this button, not navbar */
+.my-submit-btn {
+    background: #0d6efd;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+</style>
+
+{% endblock %}
+

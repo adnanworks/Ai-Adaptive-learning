@@ -1,0 +1,156 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#{{ i }}#}
+{#{% endfor %}#}
+{##}
+{#  <div class="center-card">#}
+{#    <h2>Add Material</h2>#}
+{#    <form method="POST" action="/myapp/add_matierial_post/" enctype="multipart/form-data">#}
+{#    <div class="mb-3 row">#}
+{#      <label for="subject" class="col-sm-4 col-form-label">Subject Name</label>#}
+{#      <div class="col-sm-8">#}
+{#        <select name="subject" class="form-control" id="subject" required>#}
+{#          <option value="">Select Subject</option>#}
+{#          {% for sub in subjects %}#}
+{#            <option value="{{ sub.SUBJECT.id }}">{{ sub.SUBJECT.subname }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <div class="mb-3 row">#}
+{#      <label for="dob" class="col-sm-4 col-form-label">Date</label>#}
+{#      <div class="col-sm-8">#}
+{#        <input type="date" name="date" class="form-control" id="dob" required>#}
+{#      </div>#}
+{#    </div>#}
+{#    <div class="mb-3 row">#}
+{#        <label for="materials" class="col-sm-4 col-form-label">Upload PDF</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="file" name="materials" class="form-control" id="materials" accept="application/pdf" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#    <div class="row mb-3">#}
+{#      <div class="offset-sm-4 col-sm-8">#}
+{#        <button type="submit" name="submit" class="btn btn-primary">Add</button>#}
+{#      </div>#}
+{#    </div>#}
+{#  </form>#}
+{#  </div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+
+<style>
+
+    .add-material-card {
+        max-width: 500px;
+        margin: 40px auto;
+        background: #ffffff;
+        padding: 30px 32px;
+        border-radius: 18px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .add-material-card h2 {
+        text-align: center;
+        font-weight: 600;
+        color: #2c2f39;
+        margin-bottom: 25px;
+    }
+    body {
+        background-color: lightcyan;
+    }
+
+    .add-material-card label {
+        font-weight: 500;
+        color: #3a3a3a;
+        margin-bottom: 6px;
+    }
+
+    .add-material-card .form-control {
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #cfd6dd;
+        transition: 0.3s;
+    }
+
+    .add-material-card .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+    }
+
+    .add-material-card .btn-primary {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+        background: linear-gradient(135deg, #0d6efd, #4d8dff);
+        transition: 0.3s;
+    }
+
+    .add-material-card .btn-primary:hover {
+        transform: scale(1.02);
+        background: linear-gradient(135deg, #0a58ca, #3d7dff);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+{% for i in messages %}
+<p style="text-align:center; color:green; font-weight:500;">{{ i }}</p>
+{% endfor %}
+
+<div class="add-material-card">
+    <h2>Add Material</h2>
+
+    <form method="POST" action="/myapp/add_matierial_post/" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="subject">Subject Name</label>
+            <select name="subject" class="form-control" id="subject" required>
+                <option value="">Select Subject</option>
+                {% for sub in subjects %}
+                    <option value="{{ sub.SUBJECT.id }}">{{ sub.SUBJECT.subname }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="dob">Date</label>
+            <input type="date" name="date" class="form-control" id="dob" required>
+        </div>
+        <div class="mb-3">
+            <label for="dob">Title</label>
+            <input type="text" name="title" class="form-control" id="title" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="materials">Upload PDF</label>
+            <input type="file" name="materials" class="form-control" id="materials" accept="application/pdf" required>
+        </div>
+
+        <button type="submit" name="submit" class="btn btn-primary">Add</button>
+    </form>
+</div>
+
+{% endblock %}

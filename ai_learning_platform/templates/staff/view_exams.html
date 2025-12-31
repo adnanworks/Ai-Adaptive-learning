@@ -1,0 +1,186 @@
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>View Tests/Exams</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<h2>My Exams</h2>#}
+{##}
+{#{% if messages %}#}
+{#    {% for message in messages %}#}
+{#        <p>{{ message }}</p>#}
+{#    {% endfor %}#}
+{#{% endif %}#}
+{##}
+{#{% if tests %}#}
+{#    <table border="1" cellpadding="5" cellspacing="0">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>ID</th>#}
+{#                <th>Subject</th>#}
+{#                <th>Details</th>#}
+{#                <th>Date</th>#}
+{#                <th>Add Questions</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#            {% for test in tests %}#}
+{#            <tr>#}
+{#                <td>{{ test.id }}</td>#}
+{#                <td>{{ test.SUBJECT.subname }}</td>#}
+{#                <td>{{ test.details }}</td>#}
+{#                <td>{{ test.date }}</td>#}
+{#                <td><a href="/myapp/staffadd_qstn_get/{{ test.id }}">Add Questions</a></td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{#{% else %}#}
+{#    <p>No exams found.</p>#}
+{#{% endif %}#}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Tests/Exams</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: lightcyan;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            color: #4f46e5;
+        }
+
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        thead {
+            background-color: #4f46e5;
+            color: #fff;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f3f4f6;
+        }
+
+        tbody tr:hover {
+            background-color: #e0e7ff;
+        }
+
+        a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-btn {
+            color: red !important;
+            font-weight: 700;
+        }
+
+        p {
+            text-align: center;
+            color: #16a34a;
+            font-weight: 600;
+        }
+    </style>
+
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this exam?");
+        }
+    </script>
+
+</head>
+<body>
+
+<h2>My Exams</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+{% if tests %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Subject</th>
+                <th>Details</th>
+                <th>Date</th>
+                <th>Add Questions</th>
+                <th>View Questions</th>
+                <th>Delete Exam</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in tests %}
+            <tr>
+                <td>{{ test.id }}</td>
+                <td>{{ test.SUBJECT.subname }}</td>
+                <td>{{ test.details }}</td>
+                <td>{{ test.date }}</td>
+
+                <td><a href="/myapp/staffadd_qstn_get/{{ test.id }}">Add Questions</a></td>
+
+                <td><a href="/myapp/staffview_qstn_get/{{ test.id }}">View Questions</a></td>
+
+                <td>
+                    <a href="/myapp/delete_exam/{{ test.id }}"
+                       class="delete-btn"
+                       onclick="return confirmDelete()">
+                       Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No exams found.</p>
+{% endif %}
+
+</body>
+<br><br><br>
+</html>
+{% endblock %}

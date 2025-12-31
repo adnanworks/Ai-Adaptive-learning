@@ -1,0 +1,202 @@
+{#{% extends 'admin/home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#{% for i in messages %}#}
+{#{{ i }}#}
+{#{% endfor %}#}
+{##}
+{#<div class="container mt-5">#}
+{#  <div class="custom-table-container">#}
+{#    <h2>Subjects</h2>#}
+{#    <table id="registrationTable" class="table table-hover table-bordered align-middle">#}
+{#      <thead>#}
+{#        <tr>#}
+{#          <th>Sl no</th>#}
+{#          <th>Subject Name</th>#}
+{#          <th>Semester</th>#}
+{#          <th>Edit details</th>#}
+{#          <th>Delete Subject</th>#}
+{#        </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#        {% for i in data %}#}
+{#        <tr>#}
+{#          <td>{{ forloop.counter }}</td>#}
+{#          <td>{{ i.subname }}</td>#}
+{#          <td>{{ i.semester }}</td>#}
+{#          <td>#}
+{#            <a href="/myapp/edit_subject/{{ i.id }}" class="btn btn-action btn-edit">Edit</a>#}
+{#          </td>#}
+{#          <td>#}
+{#            <a href="/myapp/delete_subject/{{ i.id }}" onclick="return confirmDelete()" class="btn btn-action btn-delete">Delete</a>#}
+{#          </td>#}
+{##}
+{#        </tr>#}
+{#        {% empty %}#}
+{#        <tr>#}
+{#          <td colspan="6" class="text-center text-muted">No Subject details available.</td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#      </tbody>#}
+{#    </table>#}
+{#  </div>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'admin/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body {
+        background: #e0f7fa;
+
+        /* Modern Table Container */
+        .custom-table-container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            transition: 0.3s ease;
+        }
+
+        .custom-table-container:hover {
+            box-shadow: 0 12px 35px rgba(0,0,0,0.09);
+        }
+
+        .custom-table-container h2 {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+            color: #333;
+        }
+
+        /* Modern Table */
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            width: 100%;
+        }
+
+        .custom-table thead th {
+            background: #f4f6fa;
+            border: none;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #444;
+            border-radius: 10px;
+        }
+
+        .custom-table tbody tr {
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            transition: 0.2s ease;
+        }
+
+        .custom-table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+
+        .custom-table tbody td {
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            padding: 6px 14px;
+            font-size: 14px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background: #007bff;
+        }
+
+        .btn-edit:hover {
+            background: #0063cc;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background: #b92a37;
+        }
+
+    </style>
+
+</head>
+<body>
+
+{% for i in messages %}
+{{ i }}
+{% endfor %}
+
+<div class="container mt-5">
+    <div class="custom-table-container">
+        <h2>Subjects</h2>
+
+        <table id="registrationTable" class="custom-table">
+            <thead>
+                <tr>
+                    <th>Sl no</th>
+                    <th>Subject Name</th>
+                    <th>Semester</th>
+                    <th>Edit details</th>
+                    <th>Delete Subject</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.subname }}</td>
+                    <td>{{ i.semester }}</td>
+                    <td>
+                        <a href="/myapp/editsubject_get/{{ i.id }}" class="btn-action btn-edit">Edit</a>
+                    </td>
+                    <td>
+                        <a href="/myapp/delete_subject/{{ i.id }}" onclick="return confirmDelete()" class="btn-action btn-delete">Delete</a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No Subject details available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<br><br><br>
+
+</body>
+</html>
+{% endblock %}

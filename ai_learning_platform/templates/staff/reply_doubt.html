@@ -1,0 +1,116 @@
+{##}
+{##}
+{#{% extends 'staff/home.html' %}#}
+{#{% block body %}<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<div class="form-panel">#}
+{#  <h2>Send Reply</h2>#}
+{##}
+{#  <form method="POST" action="/myapp/staff_doubt_reply_post/">#}
+{#    {% csrf_token %}#}
+{#      <input type="hidden" value="{{ i.id }}" name="id">#}
+{##}
+{#    <div class="row mb-3 align-items-center">#}
+{#      <label for="name" class="col-sm-4 col-form-label">Reply</label>#}
+{#      <div class="col-sm-8">#}
+{#        <input type="text" id="reply" name="reply" class="form-control" required />#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <div class="row mb-3">#}
+{#      <div class="offset-sm-4 col-sm-8">#}
+{#        <button type="submit" name="submit" class="btn btn-primary">Add</button>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#  </form>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+{% extends 'staff/home.html' %}
+{% block body %}
+
+<style>
+    .form-panel {
+        width: 90%;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 28px;
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.1);
+    }
+
+    .form-panel h2 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 25px;
+    }
+    body{
+        background-color: lightcyan;
+    }
+
+    label {
+        font-weight: 600;
+        color: #444;
+        font-size: 15px;
+    }
+
+    .form-control {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+    }
+
+    .form-control:focus {
+        border-color: #4a5cff;
+        box-shadow: 0 0 0 2px rgba(74,92,255,0.2);
+    }
+
+    .btn-primary {
+        background: #4a5cff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 15px;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .btn-primary:hover {
+        background: #3446ff;
+    }
+</style>
+
+
+<div class="form-panel">
+    <h2>Send Reply</h2>
+
+    <form method="POST" action="/myapp/staff_doubt_reply_post/">
+        {% csrf_token %}
+        <input type="hidden" value="{{ i.id }}" name="id">
+
+        <div class="mb-3">
+            <label for="reply">Reply</label>
+            <input type="text" id="reply" name="reply" class="form-control" required />
+        </div>
+
+        <div class="mt-4 text-center">
+            <button type="submit" name="submit" class="btn btn-primary">Add</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

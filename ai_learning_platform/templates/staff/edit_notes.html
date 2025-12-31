@@ -1,0 +1,44 @@
+{% extends 'staff/home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+  <div class="edit-container">
+    <h2>Edit Material</h2>
+    <form method="POST" action="/myapp/edit_material_post/" enctype="multipart/form-data">
+      <div class="mb-3">
+      <label for="subject" class="form-label">Subject Name</label>
+      <select name="subject" id="subject" class="form-control" required>
+        <option value="">Select Subject</option>
+        {% for sub in subjects %}
+        <option value="{{ sub.SUBJECT.id }}" {% if i.SUBJECT.id == sub.SUBJECT.id %}selected{% endif %}>{{ sub.SUBJECT.subname }}</option>
+        {% endfor %}
+      </select>
+      <div class="invalid-feedback" id="subjectError"></div>
+    </div>
+
+      <div class="mb-3">
+        <label for="dob" class="form-label">Date</label>
+        <input type="date" name="date" id="dob" class="form-control" value="{{ i.date }}" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="materials" class="form-label">Upload PDF</label>
+        <input type="file" name="materials" id="materials" class="form-control" accept="application/pdf" />
+        {% if i.materials %}
+          <small class="text-muted">Current File: <a href="{{ i.materials.url }}" target="_blank">{{ i.materials.name }}</a></small>
+        {% endif %}
+      </div>
+
+      <input type="hidden" name="id" value="{{ i.id }}" />
+      <button type="submit" name="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div>
+</body>
+</html>
+{% endblock %}
