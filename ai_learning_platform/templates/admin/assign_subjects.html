@@ -130,10 +130,18 @@
 </head>
 <body>
 
-{% for i in messages %}
-<div class="custom-message">
-  {{ i }}
-</div>
+{% for message in messages %}
+    <div class="alert
+        {% if message.tags == 'success' %}alert-success
+        {% elif message.tags == 'error' %}alert-danger
+        {% elif message.tags == 'warning' %}alert-warning
+        {% else %}alert-info{% endif %}
+        alert-dismissible fade show text-center shadow-sm" role="alert">
+
+        <strong>{{ message }}</strong>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 {% endfor %}
 
 <div class="form-container">

@@ -143,6 +143,19 @@
     }
 </style>
 
+{% for message in messages %}
+    <div class="alert
+        {% if message.tags == 'success' %}alert-success
+        {% elif message.tags == 'error' %}alert-danger
+        {% elif message.tags == 'warning' %}alert-warning
+        {% else %}alert-info{% endif %}
+        alert-dismissible fade show text-center shadow-sm" role="alert">
+
+        <strong>{{ message }}</strong>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
 
 <div class="form-container">
     <div class="card-modern">
@@ -169,7 +182,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" name="dob" max="{{ today }}" required>
+                <input type="date" class="form-control" name="dob" id="dob" required>
             </div>
 
             <div class="mb-3">
@@ -235,21 +248,30 @@
     </div>
 </div>
 
-
 <script>
+    // DOB must be at least 5 years old
+    let dob = document.getElementById("dob");
+    let today = new Date();
+
+    let maxDate = new Date(
+        today.getFullYear() - 15,
+        today.getMonth(),
+        today.getDate()
+    );
+
+    dob.max = maxDate.toISOString().split("T")[0];
+
     function validateForm() {
         let phone = document.getElementById("phone").value;
-
-        // Phone must start with 6/7/8/9 and must be 10 digits
         let phoneRegex = /^[6-9]\d{9}$/;
 
         if (!phoneRegex.test(phone)) {
             alert("Phone number must start with 6, 7, 8, or 9 and must be exactly 10 digits.");
             return false;
         }
-
         return true;
     }
 </script>
 
 {% endblock %}
+

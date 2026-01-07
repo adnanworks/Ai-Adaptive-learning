@@ -99,6 +99,7 @@ urlpatterns = [
     path('staff_doubt_reply_post/',views.staff_doubt_reply_post),
 
     path('staff_change_pwd_get/',views.staff_change_pwd_get),
+    path('changepwd_staff_post/',views.changepwd_staff_post),
 
 # ================================student==============================
 

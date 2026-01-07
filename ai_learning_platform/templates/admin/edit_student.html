@@ -172,6 +172,19 @@
 
 </head>
 <body>
+{% for message in messages %}
+    <div class="alert
+        {% if message.tags == 'success' %}alert-success
+        {% elif message.tags == 'error' %}alert-danger
+        {% elif message.tags == 'warning' %}alert-warning
+        {% else %}alert-info{% endif %}
+        alert-dismissible fade show text-center shadow-sm" role="alert">
+
+        <strong>{{ message }}</strong>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
 
 <form method="POST" action="/myapp/editstudent_post/" enctype="multipart/form-data"
       id="editStudentForm" novalidate>
@@ -236,8 +249,13 @@
         </tr>
 
         <tr>
+
             <td><label for="photo">Upload Photo</label></td>
+
             <td>
+                {% if i.photo %}
+                <img src="{{ i.photo.url }}" width="80"><br>
+                {% endif %}
                 <input type="file" id="photo" name="photo" accept="image/*" class="form-control">
             </td>
         </tr>
@@ -256,6 +274,16 @@
 </form>
 
 <script>
+    let dob = document.getElementById("dob");
+    let today = new Date();
+
+    let maxDate = new Date(
+        today.getFullYear() - 15,
+        today.getMonth(),
+        today.getDate()
+    );
+
+    dob.max = maxDate.toISOString().split("T")[0];
 (() => {
     const form = document.getElementById("editStudentForm");
 

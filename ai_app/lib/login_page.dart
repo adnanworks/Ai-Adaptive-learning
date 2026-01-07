@@ -216,6 +216,7 @@
 
 
 import 'dart:convert';
+import 'package:ai_app/main.dart';
 import 'package:ai_app/student/home.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -272,270 +273,277 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF0F0B21),
-              Color(0xFF1A1A2E),
-              Color(0xFF16213E),
-            ],
+    return WillPopScope(
+      onWillPop: () async{
+        Navigator.push(context, MaterialPageRoute(builder: (builder)=>ip(title: '')));
+        return true;
+      },
+      child: Scaffold(
+
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF0F0B21),
+                Color(0xFF1A1A2E),
+                Color(0xFF16213E),
+              ],
+            ),
           ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
 
-                Container(
-                  width: 180,
-                  height: 180,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: Lottie.asset(
-                    'assets/Artificial Intelligence.json',
-                    fit: BoxFit.contain,
+                  Container(
+                    width: 180,
+                    height: 180,
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: Lottie.asset(
+                      'assets/Artificial Intelligence.json',
+                      fit: BoxFit.contain,
 
-                  ),
-                ),
-
-                // Title
-                Text(
-                  'Welcome Back',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                // Subtitle
-                Text(
-                  'Sign in to continue to your account',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white70,
-                  ),
-                ),
-
-                const SizedBox(height: 48),
-
-                // Glassmorphism Login Container
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    color: Colors.white.withOpacity(0.05),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.1),
-                      width: 1,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 30,
-                        spreadRadius: 5,
-                      ),
-                    ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: Column(
-                      children: [
-                        // Email Field
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Colors.white.withOpacity(0.07),
-                          ),
-                          child: TextField(
-                            controller: _usernametextController,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            decoration: InputDecoration(
-                              labelText: 'Email ID',
-                              labelStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              hintText: 'Enter your email address',
-                              hintStyle: TextStyle(
-                                color: Colors.white30,
-                                fontSize: 16,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.email_rounded,
-                                color: Colors.deepPurpleAccent,
-                                size: 24,
-                              ),
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 18,
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                          ),
+
+                  // Title
+                  Text(
+                    'Welcome Back',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  // Subtitle
+                  Text(
+                    'Sign in to continue to your account',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white70,
+                    ),
+                  ),
+
+                  const SizedBox(height: 48),
+
+                  // Glassmorphism Login Container
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: Colors.white.withOpacity(0.05),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.1),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 30,
+                          spreadRadius: 5,
                         ),
-
-                        const SizedBox(height: 20),
-
-                        // Password Field
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Colors.white.withOpacity(0.07),
-                          ),
-                          child: TextField(
-                            controller: _passwordtextController,
-                            obscureText: _obscurePassword,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: Column(
+                        children: [
+                          // Email Field
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.white.withOpacity(0.07),
                             ),
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              labelStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              hintText: 'Enter your password',
-                              hintStyle: TextStyle(
-                                color: Colors.white30,
-                                fontSize: 16,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.lock_rounded,
-                                color: Colors.deepPurpleAccent,
-                                size: 24,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_off_rounded
-                                      : Icons.visibility_rounded,
-                                  color: Colors.deepPurpleAccent,
-                                  size: 22,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
-                              ),
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 8),
-
-                        const SizedBox(height: 32),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: _isLoading ? null : _sendData,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurpleAccent,
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              shadowColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16,
-                              ),
-                            ),
-                            child: _isLoading
-                                ? SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
+                            child: TextField(
+                              controller: _usernametextController,
+                              style: TextStyle(
                                 color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
                               ),
-                            )
-                                : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Sign In',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.5,
+                              decoration: InputDecoration(
+                                labelText: 'Email ID',
+                                labelStyle: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                hintText: 'Enter your email address',
+                                hintStyle: TextStyle(
+                                  color: Colors.white30,
+                                  fontSize: 16,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.email_rounded,
+                                  color: Colors.deepPurpleAccent,
+                                  size: 24,
+                                ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 18,
+                                ),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Password Field
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.white.withOpacity(0.07),
+                            ),
+                            child: TextField(
+                              controller: _passwordtextController,
+                              obscureText: _obscurePassword,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                                labelStyle: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                hintText: 'Enter your password',
+                                hintStyle: TextStyle(
+                                  color: Colors.white30,
+                                  fontSize: 16,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock_rounded,
+                                  color: Colors.deepPurpleAccent,
+                                  size: 24,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off_rounded
+                                        : Icons.visibility_rounded,
+                                    color: Colors.deepPurpleAccent,
+                                    size: 22,
                                   ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
                                 ),
-                                const SizedBox(width: 12),
-                                Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 22,
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 18,
                                 ),
-                              ],
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          const SizedBox(height: 32),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: _isLoading ? null : _sendData,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.deepPurpleAccent,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                              ),
+                              child: _isLoading
+                                  ? SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3,
+                                  color: Colors.white,
+                                ),
+                              )
+                                  : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 22,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Register Section
+
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Additional Info
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurpleAccent.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.deepPurpleAccent.withOpacity(0.2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.security_rounded,
+                          color: Colors.deepPurpleAccent,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Your credentials are securely encrypted',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
                             ),
                           ),
                         ),
-                        // Register Section
-
                       ],
                     ),
                   ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Additional Info
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurpleAccent.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.deepPurpleAccent.withOpacity(0.2),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.security_rounded,
-                        color: Colors.deepPurpleAccent,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Your credentials are securely encrypted',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

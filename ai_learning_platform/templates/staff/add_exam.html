@@ -145,6 +145,11 @@
 
     <button type="submit" name="submit">Add Test</button>
 </form>
+<script>
+    const dateInput = document.querySelector('input[name="date"]');
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.min = today;
+</script>
 
 </body>
 </html>

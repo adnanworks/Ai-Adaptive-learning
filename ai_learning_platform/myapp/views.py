@@ -70,7 +70,7 @@ def admin_view_staff_get(request):
     s=Staff.objects.all()
     return render(request, 'admin/view_staff.html',{'data':s})
 
-
+@login_required(login_url='/myapp/login_get/')
 def admin_verify_staff_post(request):
     if request.method=='POST':
         if 'unblock' in request.POST:
@@ -94,6 +94,7 @@ def add_students_get(request):
 
     return render(request, 'admin/add_students.html',{'today': date.today().isoformat()})
 
+@login_required(login_url='/myapp/login_get/')
 def add_student_post(request):
     name=request.POST['name']
     email = request.POST['email']
@@ -137,6 +138,7 @@ def admin_edit_student_get(request,id):
     i = Student.objects.get(id=id)
     return render(request, 'admin/edit_student.html',{'i':i})
 
+@login_required(login_url='/myapp/login_get/')
 def editstudent_post(request):
     id = request.POST['id']
     i = Student.objects.get(id=id)
@@ -173,6 +175,7 @@ def editstudent_post(request):
     return redirect('/myapp/view_students_get/')
 
 
+@login_required(login_url='/myapp/login_get/')
 def admin_delete_student_get(request,id):
     i = Student.objects.get(id=id)
     i.delete()
@@ -184,6 +187,7 @@ def admin_delete_student_get(request,id):
 def add_subjects_get(request):
     return render(request, 'admin/add_subjects.html')
 
+@login_required(login_url='/myapp/login_get/')
 def add_subject_post(request):
     name=request.POST['name']
     sem=request.POST['sem']
@@ -205,6 +209,7 @@ def editsubject_get(request,id):
     i = Subjects.objects.get(id=id)
     return render(request, 'admin/edit_subject.html',{'i':i})
 
+@login_required(login_url='/myapp/login_get/')
 def editsubject_post(request):
     id = request.POST['id']
     i = Subjects.objects.get(id=id)
@@ -218,6 +223,7 @@ def editsubject_post(request):
     messages.success(request, 'Subject details edited')
     return redirect('/myapp/view_subjects_get/')
 
+@login_required(login_url='/myapp/login_get/')
 def delete_subject(request,id):
     i = Subjects.objects.get(id=id)
     i.delete()
@@ -231,6 +237,7 @@ def assign_subjects_get(request):
     return render(request, 'admin/assign_subjects.html', {'subjects': all_subjects, 'staffs': all_staff})
 
 
+@login_required(login_url='/myapp/login_get/')
 def assignsubjects_post(request):
     subject=request.POST['subject']
     staff=request.POST['staff']
@@ -256,6 +263,7 @@ def editassigned_get(request,id):
     all_staff = Staff.objects.all()
     return render(request, 'admin/edit_assig_subj.html',{'i':i,'subjects': all_subjects, 'staffs': all_staff})
 
+@login_required(login_url='/myapp/login_get/')
 def editassigned_post(request):
     id = request.POST['id']
     i = Assign_subj.objects.get(id=id)
@@ -270,6 +278,7 @@ def editassigned_post(request):
     messages.success(request, 'Assigned Details edited')
     return redirect('/myapp/view_assignedsubjects/')
 
+@login_required(login_url='/myapp/login_get/')
 def delete_assigned(request,id):
     i = Assign_subj.objects.get(id=id)
     i.delete()
@@ -287,6 +296,7 @@ def send_notification_admin(request):
     return render(request, 'admin/add_notification.html')
 
 
+@login_required(login_url='/myapp/login_get/')
 def add_notification_post(request):
     name=request.POST['notif']
 
@@ -302,6 +312,7 @@ def view_notification_admin(request):
     n=Notification.objects.all()
     return render(request,'admin/view_nofication.html',{'data':n})
 
+@login_required(login_url='/myapp/login_get/')
 def delete_notofication(request,id):
     i = Notification.objects.get(id=id)
     i.delete()
@@ -313,6 +324,7 @@ def delete_notofication(request,id):
 def changepwd_admin_get(request):
     return render(request,'admin/change_password.html')
 
+@login_required(login_url='/myapp/login_get/')
 def changepwd_admin_post(request):
     if request.method== 'POST':
         cpass=request.POST['cpass']
@@ -345,6 +357,7 @@ def admin_compl_reply_get(request,id):
     return render(request,'admin/send_compl_reply.html',{'data':i})
 
 
+@login_required(login_url='/myapp/login_get/')
 def admin_compl_reply_post(request):
     id=request.POST['id']
     r=request.POST['reply']
@@ -358,7 +371,6 @@ def admin_compl_reply_post(request):
 # =====================================================
 # =====================STAFF===========================
 # =====================================================
-
 
 
 def staff_register_get(request):
@@ -428,6 +440,7 @@ def staff_edit_profile_get(request,id):
     p=Staff.objects.get(id=id)
     return render(request,'staff/edit_profile.html',{"i":p})
 
+@login_required(login_url='/myapp/login_get/')
 def staff_edit_profile_post(request):
     id = request.POST['id']
     name = request.POST['name']
@@ -475,16 +488,17 @@ def add_matierial_get(request):
     all_subjects = Assign_subj.objects.filter(STAFF__LOGIN=request.user)
     return render(request,'staff/add_notes.html',{'subjects': all_subjects,})
 
+@login_required(login_url='/myapp/login_get/')
 def add_matierial_post(request):
     subject_id=request.POST['subject']
-    date=request.POST['date']
+    # date=request.POST['date']
     materials=request.FILES['materials']
     title=request.POST['title']
 
     tm=Notes()
     tm.SUBJECT = Subjects.objects.get(id=subject_id)
     tm.STAFF=Staff.objects.get(LOGIN__id=request.user.id)
-    tm.date=date
+    tm.date=date.today()
     tm.title=title
     tm.materials=materials
     tm.save()
@@ -505,10 +519,12 @@ def edit_material_get(request,id):
     all_subjects = Assign_subj.objects.filter(STAFF__LOGIN__id=request.user.id)
     return render(request, 'staff/edit_notes.html',{'i':i,'subjects': all_subjects,})
 
+
+@login_required(login_url='/myapp/login_get/')
 def edit_material_post(request):
     id = request.POST['id']
     subject = request.POST['subject']
-    date=request.POST['date']
+    # date=request.POST['date']
     i = Notes.objects.get(id=id)
     if 'materials' in request.FILES:
         materials=request.FILES['materials']
@@ -518,13 +534,14 @@ def edit_material_post(request):
 
     i.SUBJECT_id = subject
     i.STAFF=Staff.objects.get(LOGIN__id=request.user.id)
-    i.date=date
+
 
     i.save()
     print('ssss',i)
     messages.success(request, 'Study Material edited')
     return redirect('/myapp/view_studymaterial/')
 
+@login_required(login_url='/myapp/login_get/')
 def delete_studymaterial(request,id):
     i = Notes.objects.get(id=id)
     i.delete()
@@ -544,6 +561,7 @@ def staffview_notific(request):
     n=Notification.objects.all()
     return render(request,'staff/view_notifications.html',{'data':n})
 
+@login_required(login_url='/myapp/login_get/')
 def changepwd_staff_post(request):
     if request.method== 'POST':
         cpass=request.POST['cpass']
@@ -576,6 +594,8 @@ def staff_doubt_reply_get(request,id):
     i = Doubts.objects.get(id=id)
     return render(request,'staff/reply_doubt.html',{'i':i})
 
+
+@login_required(login_url='/myapp/login_get/')
 def staff_doubt_reply_post(request):
     id=request.POST['id']
     r=request.POST['reply']
@@ -617,6 +637,8 @@ def staffadd_qstn_get(request,id):
     q=Test.objects.get(id=id)
     return render(request,'staff/add_questions.html',{'i':q})
 
+
+@login_required(login_url='/myapp/login_get/')
 def add_question_post(request):
     test_id = request.POST['test']
     question = request.POST['question']
@@ -648,6 +670,7 @@ def view_questions(request,id):
     return render(request, "staff/view_questions.html", {"data": data})
 
 
+@login_required(login_url='/myapp/login_get/')
 def delete_question(request,id):
     i = Question_Answers.objects.get(id=id)
     i.delete()
@@ -655,6 +678,7 @@ def delete_question(request,id):
     messages.success(request, 'Details deleted')
     return redirect('/myapp/staff_view_exam_get/')
 
+@login_required(login_url='/myapp/login_get/')
 def delete_exam(request,id):
     i = Test.objects.get(id=id)
     i.delete()
@@ -1111,8 +1135,8 @@ def student_view_results(request):
         data.append({
             'id': result.TEST.id,
             'subject': result.TEST.SUBJECT.subname,
-            'score': str(result.total_mark),                  # use total_mark from TestResult
-            'total': str(sum(int(q.score) for q in result.TEST.question_answers_set.all())),  # total possible
+            'score': str(result.total_mark),
+            'total': str(sum(int(q.score) for q in result.TEST.question_answers_set.all())),
             'date': result.date,
         })
 

@@ -147,6 +147,19 @@
 </head>
 
 <body>
+{% for message in messages %}
+    <div class="alert
+        {% if message.tags == 'success' %}alert-success
+        {% elif message.tags == 'error' %}alert-danger
+        {% elif message.tags == 'warning' %}alert-warning
+        {% else %}alert-info{% endif %}
+        alert-dismissible fade show text-center shadow-sm" role="alert">
+
+        <strong>{{ message }}</strong>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
 
 <div class="profile-card">
     <h2>Edit Profile</h2>
@@ -186,6 +199,9 @@
 
         <div class="form-group">
             <label class="form-label">Photo</label>
+            {% if i.photo %}
+        <img src="{{ i.photo.url }}" width="80"><br>
+        {% endif %}
             <input type="file" name="photo" class="form-control">
         </div>
 
@@ -194,6 +210,19 @@
 </div>
 
 <script>
+
+
+    const dobInput = document.querySelector('input[name="dob"]');
+    const today = new Date();
+
+    const maxDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+    );
+
+    dobInput.max = maxDate.toISOString().split("T")[0];
+
 function validateForm() {
     let phone = document.getElementById("phone").value;
 
