@@ -63,6 +63,7 @@ class Notes(models.Model):
     SUBJECT = models.ForeignKey(Subjects, on_delete=models.CASCADE)
     STAFF = models.ForeignKey(Staff, on_delete=models.CASCADE)
     materials = models.FileField()
+    text=models.TextField()
 
 class Test(models.Model):
     STAFF = models.ForeignKey(Staff, on_delete=models.CASCADE)

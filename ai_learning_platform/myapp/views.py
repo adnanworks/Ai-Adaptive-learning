@@ -13,6 +13,8 @@ from django.shortcuts import render, redirect
 
 
 # Create your views here.
+from django.views.decorators.cache import never_cache
+
 from myapp.models import *
 
 
@@ -62,6 +64,7 @@ def login_post(request):
 
 
 @login_required(login_url='/myapp/login_get/')
+
 def admin_home(request):
     return render(request,'admin/home.html')
 
@@ -179,6 +182,7 @@ def editstudent_post(request):
 def admin_delete_student_get(request,id):
     i = Student.objects.get(id=id)
     i.delete()
+    # u=Student.
     messages.success(request, 'Student deleted')
     return redirect('/myapp/view_students_get/')
 
@@ -488,23 +492,56 @@ def add_matierial_get(request):
     all_subjects = Assign_subj.objects.filter(STAFF__LOGIN=request.user)
     return render(request,'staff/add_notes.html',{'subjects': all_subjects,})
 
+# @login_required(login_url='/myapp/login_get/')
+# def add_matierial_post(request):
+#     subject_id=request.POST['subject']
+#     # date=request.POST['date']
+#     materials=request.FILES['materials']
+#     title=request.POST['title']
+#
+#     tm=Notes()
+#     tm.SUBJECT = Subjects.objects.get(id=subject_id)
+#     tm.STAFF=Staff.objects.get(LOGIN__id=request.user.id)
+#     tm.date=date.today()
+#     tm.title=title
+#     tm.materials=materials
+#     tm.save()
+#
+#     messages.success(request, 'Study material Added')
+#     return redirect('/myapp/staff_home/')
+
+import PyPDF2
+from datetime import date
+from django.shortcuts import redirect
+from django.contrib import messages
 @login_required(login_url='/myapp/login_get/')
 def add_matierial_post(request):
-    subject_id=request.POST['subject']
-    # date=request.POST['date']
-    materials=request.FILES['materials']
-    title=request.POST['title']
 
-    tm=Notes()
+    subject_id = request.POST['subject']
+    materials = request.FILES['materials']
+    title = request.POST['title']
+
+    # Extract PDF text
+    pdf_reader = PyPDF2.PdfReader(materials)
+    extracted_text = ""
+
+    for page in pdf_reader.pages:
+        extracted_text += page.extract_text()
+
+    tm = Notes()
     tm.SUBJECT = Subjects.objects.get(id=subject_id)
-    tm.STAFF=Staff.objects.get(LOGIN__id=request.user.id)
-    tm.date=date.today()
-    tm.title=title
-    tm.materials=materials
+    tm.STAFF = Staff.objects.get(LOGIN__id=request.user.id)
+    tm.date = date.today()
+    tm.title = title
+    tm.materials = materials
+    tm.text = extracted_text
     tm.save()
 
     messages.success(request, 'Study material Added')
     return redirect('/myapp/staff_home/')
+
+
+
 
 
 @login_required(login_url='/myapp/login_get/')
@@ -951,7 +988,6 @@ def student_view_questions(request):
     test_id = request.POST.get('test_id')
     print("Test ID:", test_id)
 
-    # Filter questions for that test
     questions = Question_Answers.objects.filter(TEST_id=test_id)
 
     # Prepare data list
@@ -1033,12 +1069,10 @@ def submit_answer(request):
 
             student = Student.objects.get(id=student_id)
 
-            # Get TEST from first question
             first_qid = int(list(answers.keys())[0])
             first_question = Question_Answers.objects.get(id=first_qid)
             test = first_question.TEST
 
-            # ✅ CHECK: already written this test before?
             if TestResult.objects.filter(STUDENT=student, TEST=test).exists():
                 return JsonResponse({
                     'status': 'error',
@@ -1047,17 +1081,14 @@ def submit_answer(request):
 
             total_mark = 0   # will accumulate total marks
 
-            # --- SAVE ANSWERS ONE BY ONE ---
             for qid_str, selected_option in answers.items():
 
                 qid = int(qid_str)
                 question = Question_Answers.objects.get(id=qid)
 
-                # calculate mark for this question
                 mark = int(question.score) if selected_option == question.answer else 0
                 total_mark += mark
 
-                # Save to Attend table
                 Attend.objects.create(
                     STUDENT=student,
                     QUESTION=question,
@@ -1143,175 +1174,240 @@ def student_view_results(request):
     return JsonResponse({'status': 'ok', 'data': data})
 
 
-from django.http import JsonResponse
-from .models import Student, Attend, Notes
-from difflib import SequenceMatcher
-
-def similar(a, b):
-    return SequenceMatcher(None, a.lower(), b.lower()).ratio()  # returns 0..1
-
-def recommended_notes(request):
-    if request.method == 'POST':
-        student_id = request.POST.get('student_id')
-        print("Received student_id:", student_id)
-
-        try:
-            student = Student.objects.get(id=student_id)
-            print("Student found:", student)
-        except Student.DoesNotExist:
-            print("Student not found")
-            return JsonResponse({'status': 'error', 'message': 'Student not found'})
-
-        failed_questions = Attend.objects.filter(STUDENT=student, mark='0')
-        print("Failed questions:", failed_questions.count())
-
-        if not failed_questions.exists():
-            print("No failed questions")
-            return JsonResponse({'status': 'ok', 'data': [], 'message': 'No failed questions.'})
-
-        all_notes = Notes.objects.all()
-        print("Total notes in database:", all_notes.count())
-
-        recommended = []
-        threshold = 0.3  # minimum similarity to consider a match (adjustable)
-
-        for attend in failed_questions:
-            question_text = attend.QUESTION.question
-            print("Checking failed question:", question_text)
-
-            for note in all_notes:
-                title = note.title
-                file_name = note.materials.name
-
-                title_similarity = similar(question_text, title)
-                file_similarity = similar(question_text, file_name)
-
-                print(f"Comparing with note: {title} -> title_similarity: {title_similarity:.2f}, file_similarity: {file_similarity:.2f}")
-
-                if title_similarity >= threshold or file_similarity >= threshold:
-                    if note.id not in [n['id'] for n in recommended]:
-                        recommended.append({
-                            'id': note.id,
-                            'title': note.title,
-                            'file': request.build_absolute_uri(note.materials.url),
-                            'date': note.date,
-                        })
-                        print(f"Matched note: {note.title} for question: {question_text}")
-
-        print("Total recommended notes:", len(recommended))
-        return JsonResponse({'status': 'ok', 'data': recommended})
-
-    print("Invalid request method")
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+# from django.http import JsonResponse
+# from .models import Student, Attend, Notes
+# from difflib import SequenceMatcher
+#
+# def similar(a, b):
+#     return SequenceMatcher(None, a.lower(), b.lower()).ratio()  # returns 0..1
+#
+# def recommended_notes(request):
+#     if request.method == 'POST':
+#         student_id = request.POST.get('student_id')
+#         print("Received student_id:", student_id)
+#
+#         try:
+#             student = Student.objects.get(id=student_id)
+#             print("Student found:", student)
+#         except Student.DoesNotExist:
+#             print("Student not found")
+#             return JsonResponse({'status': 'error', 'message': 'Student not found'})
+#
+#         failed_questions = Attend.objects.filter(STUDENT=student, mark='0')
+#         print("Failed questions:", failed_questions.count())
+#
+#         if not failed_questions.exists():
+#             print("No failed questions")
+#             return JsonResponse({'status': 'ok', 'data': [], 'message': 'No failed questions.'})
+#
+#         all_notes = Notes.objects.all()
+#         print("Total notes in database:", all_notes.count())
+#
+#         recommended = []
+#         threshold = 0.3  # minimum similarity to consider a match (adjustable)
+#
+#         for attend in failed_questions:
+#             question_text = attend.QUESTION.question
+#             print("Checking failed question:", question_text)
+#
+#             for note in all_notes:
+#                 title = note.title
+#                 file_name = note.materials.name
+#
+#                 title_similarity = similar(question_text, title)
+#                 file_similarity = similar(question_text, file_name)
+#
+#                 print(f"Comparing with note: {title} -> title_similarity: {title_similarity:.2f}, file_similarity: {file_similarity:.2f}")
+#
+#                 if title_similarity >= threshold or file_similarity >= threshold:
+#                     if note.id not in [n['id'] for n in recommended]:
+#                         recommended.append({
+#                             'id': note.id,
+#                             'title': note.title,
+#                             'file': request.build_absolute_uri(note.materials.url),
+#                             'date': note.date,
+#                         })
+#                         print(f"Matched note: {note.title} for question: {question_text}")
+#
+#         print("Total recommended notes:", len(recommended))
+#         return JsonResponse({'status': 'ok', 'data': recommended})
+#
+#     print("Invalid request method")
+#     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 
 
 # ==============================================================
 
 
+import re
+from django.http import JsonResponse
+from .models import Student, Attend, Notes
+from sentence_transformers import SentenceTransformer, util
+
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+
+def split_topics(text):
+    blocks = re.split(r'\n\s*\n|\n(?=[A-Z])', text)
+    return [b.strip() for b in blocks if len(b.strip()) > 20]
+
+
+def recommended_notes(request):
+
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+    student_id = request.POST.get('student_id')
+
+    try:
+        student = Student.objects.get(id=student_id)
+    except Student.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Student not found'})
+
+    failed_questions = Attend.objects.filter(STUDENT=student, mark='0')
+
+    if not failed_questions.exists():
+        return JsonResponse({'status': 'ok', 'data': [], 'message': 'No failed questions.'})
+
+    all_notes = Notes.objects.all()
+
+    recommended = []
+
+    for attend in failed_questions:
+
+        question_text = attend.QUESTION.question
+
+        query_embedding = model.encode(question_text, convert_to_tensor=True)
+
+        best_result = None
+        best_score = 0
+
+        for note in all_notes:
+
+            if not note.text:
+                continue
+
+            topics = split_topics(note.text)
+
+            topic_embeddings = model.encode(topics, convert_to_tensor=True)
+
+            scores = util.cos_sim(query_embedding, topic_embeddings)[0]
+
+            for i, score in enumerate(scores):
+
+                similarity = score.item()
+
+                if similarity > best_score and similarity > 0.40:
+
+                    best_score = similarity
+
+                    best_result = {
+                        'id': note.id,
+                        'title': note.title,
+                        'file': request.build_absolute_uri(note.materials.url),
+                        'snippet': topics[i],  # ✅ matched paragraph
+                        'date': note.date,
+                        'score': round(similarity, 3)
+                    }
+
+        if best_result:
+            recommended.append(best_result)
+
+    return JsonResponse({
+        'status': 'ok',
+        'data': recommended
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# =======================================new
+
+
+
 
 
 
 import re
-from difflib import SequenceMatcher
+from django.http import JsonResponse
+from .models import Notes
+from sentence_transformers import SentenceTransformer, util
 
-def similar(a, b):
-    return SequenceMatcher(None, a.lower(), b.lower()).ratio()
-
-def extract_keywords(text):
-    text = text.lower()
-    text = re.sub(r'[^a-zA-Z0-9\s]', ' ', text)
-    words = text.split()
-
-    stopwords = ["what", "is", "the", "for", "of", "explain", "define",
-                 "send", "notes", "material", "give", "me", "a", "an"]
-
-    keywords = [w for w in words if w not in stopwords and len(w) > 2]
-
-    return keywords
-
-#
-# def chatbot_recommend_notes(request):
-#     if request.method != 'POST':
-#         return JsonResponse({'status': 'error', 'message': 'POST required'})
-#
-#     user_message = request.POST.get('message')
-#     if not user_message:
-#         return JsonResponse({'status': 'error', 'message': 'No message received'})
-#
-#     # Extract keywords locally
-#     topics_list = extract_keywords(user_message)
-#     print("Extracted keywords:", topics_list)
-#
-#     all_notes = Notes.objects.all()
-#     recommended = []
-#     threshold = 0.30
-#
-#     for note in all_notes:
-#         title = note.title
-#         file_name = note.materials.name
-#
-#         for topic in topics_list:
-#             score_title = similar(topic, title)
-#             score_file = similar(topic, file_name)
-#
-#             print(f"Match '{topic}' -> '{title}' : {score_title:.2f}")
-#
-#             if score_title >= threshold or score_file >= threshold:
-#                 if note.id not in [n['id'] for n in recommended]:
-#                     recommended.append({
-#                         'id': note.id,
-#                         'title': note.title,
-#                         'file': request.build_absolute_uri(note.materials.url),
-#                         'date': note.date,
-#                     })
-#
-#     return JsonResponse({'status': 'ok', 'data': recommended})
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
 
+def split_topics(text):
+    """
+    Split PDF text into topic blocks.
+    Assumption:
+    Topic starts with newline or heading style separation.
+    """
+    blocks = re.split(r'\n\s*\n|\n(?=[A-Z])', text)
+    return [b.strip() for b in blocks if len(b.strip()) > 20]
 
 
 def chatbot_recommend_notes(request):
-    if request.method != 'POST':
-        return JsonResponse({'status': 'error', 'message': 'POST required'})
 
-    user_message = request.POST.get('message')
+    if request.method != "POST":
+        return JsonResponse({"status": "error", "message": "POST required"})
+
+    user_message = request.POST.get("message")
+
     if not user_message:
-        return JsonResponse({'status': 'error', 'message': 'No message received'})
+        return JsonResponse({"status": "error", "message": "No message"})
 
-    topics_list = extract_keywords(user_message)
-    print("Extracted keywords:", topics_list)
+    query_embedding = model.encode(user_message, convert_to_tensor=True)
 
-    all_notes = Notes.objects.all()
-    recommended = []
-    threshold = 0.50
+    notes = Notes.objects.all()
 
-    for note in all_notes:
-        title = note.title
-        file_name = note.materials.name
+    best_result = None
+    best_score = 0
 
-        for topic in topics_list:
-            score_title = similar(topic, title)
-            score_file = similar(topic, file_name)
+    for note in notes:
 
-            print(f"Match '{topic}' -> '{title}' : {score_title:.2f}")
+        if not note.text:
+            continue
 
-            if score_title >= threshold or score_file >= threshold:
-                if note.id not in [n['id'] for n in recommended]:
-                    recommended.append({
-                        'id': note.id,
-                        'title': note.title,
-                        'file': request.build_absolute_uri(note.materials.url),
-                        'date': str(note.date),
-                    })
+        topics = split_topics(note.text)
 
-    # ---------------------------------------------
-    # NO MATCH FOUND → reply message
-    # ---------------------------------------------
-    if not recommended:
+        topic_embeddings = model.encode(topics, convert_to_tensor=True)
+
+        scores = util.cos_sim(query_embedding, topic_embeddings)[0]
+
+        for i, score in enumerate(scores):
+
+            similarity = score.item()
+
+            if similarity > best_score and similarity > 0.45:
+
+                best_score = similarity
+
+                best_result = {
+                    "title": note.title,
+                    "file": request.build_absolute_uri(note.materials.url),
+                    "snippet": topics[i],   # ✅ Only show matched paragraph/topic
+                    "date": str(note.date),
+                    "score": round(similarity, 3)
+                }
+
+    if not best_result:
         return JsonResponse({
-            'status': 'nomatch',
-            'message': "❌ Sorry, I couldn't find any notes related to your question."
+            "status": "nomatch",
+            "message": "❌ No related notes found"
         })
 
-    return JsonResponse({'status': 'ok', 'data': recommended})
+    return JsonResponse({
+        "status": "ok",
+        "data": [best_result]
+    })
